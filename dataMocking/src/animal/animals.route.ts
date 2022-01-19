@@ -63,4 +63,75 @@ route.post('/animal', (req, res) => {
   }
 });
 
+// update -> PUT
+route.put('/animal/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    let result;
+    Animal.forEach((animal) => {
+      if (animal.id === id) {
+        animal = data;
+        result = animal;
+      }
+    });
+    res.status(200).send({
+      success: true,
+      data: {
+        animal: result,
+      },
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+// 부분적으로 데이터 업데이트 -> PATCH
+route.patch('/animal/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    let result;
+    Animal.forEach((animal) => {
+      if (animal.id === id) {
+        animal = { ...animal, ...data };
+        result = animal;
+      }
+    });
+    res.status(200).send({
+      success: true,
+      data: {
+        animal: result,
+      },
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+// delete ->DELETE
+route.delete('/animal/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = Animal.filter((animal) => animal.id !== id);
+
+    res.status(200).send({
+      success: true,
+      data: {
+        animal: deleted,
+      },
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      error: error.message,
+    });
+  }
+});
 export default route;
