@@ -1,7 +1,9 @@
 # NestJs Study
 
 #### 1. hello world
+
 #### 2. express + ts 활용
+
 #### 3. dataMocking 이용한 express 이해하기
 
 - express의 middleware 구현
@@ -13,23 +15,23 @@
     - 존재하지 않는 api 요청시 error handling 역할: api 함수를 모두 지난 맨 끝에 위치
 
   ```javascript
-  app.use((req, res, next) =>{
-      console.log('logging middleware');
-       next();
+  app.use((req, res, next) => {
+    console.log("logging middleware");
+    next();
   });
 
-  app.get('/', (req: express.Request, res: express.Response) => {
-      console.log(req.rawHeaders[1]);
-      res.send({ animals: Animal });
+  app.get("/", (req: express.Request, res: express.Response) => {
+    console.log(req.rawHeaders[1]);
+    res.send({ animals: Animal });
   });
 
-  app.get('/cat', (req, res) => {
-      console.log('cat data');
-      res.send({ cat: Animal[2] });
+  app.get("/cat", (req, res) => {
+    console.log("cat data");
+    res.send({ cat: Animal[2] });
   });
 
-  app.use((req, res, next) =>{
-      res.send({ error: '404 not found error' });
+  app.use((req, res, next) => {
+    res.send({ error: "404 not found error" });
   });
   ```
 
@@ -38,11 +40,11 @@
 1.  Read : 특정 id값 get
 
 ```javascript
-route.get('/animal/:id', (req, res) => {
-    const id = req.params.id;
-    const cat = Animal.find((cat) => {
-      return cat.id === id;
-    });
+route.get("/animal/:id", (req, res) => {
+  const id = req.params.id;
+  const cat = Animal.find((cat) => {
+    return cat.id === id;
+  });
 });
 ```
 
@@ -62,9 +64,50 @@ route.post('/animal', (req, res) => {
 });
 ```
 
+3. update
+
+- PUT: 업데이트할 데이터를 대체
+- PATCH: 부분적으로 데이터를 업데이트
+
+```javascript
+route.put('/animal/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    let result;
+    Animal.forEach((animal) => {
+      if (animal.id === id) {
+        animal = data;
+//...생략
+}
+
+route.patch('/animal/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    let result;
+    Animal.forEach((animal) => {
+      if (animal.id === id) {
+        animal = { ...animal, ...data }; // 구조분해. 기존키값과 비교해 중복되는 값 대체
+        result = animal;
+      }
+    });
+    //...생략
+}
+```
+
+4. delete: 데이터 삭제
+
+```javascript
+route.delete('/animal/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = Animal.filter((animal) => animal.id !== id);
+
+```
+
 - route (API end-point) 모듈 분리하기
   - 분리 전
     ![모듈분리전](https://user-images.githubusercontent.com/24540759/149896292-f60fbf3d-5ba9-479e-b459-3ba41d46555e.PNG)
-    
   - 분리 후
     ![모듈분리후](https://user-images.githubusercontent.com/24540759/149896308-8d416815-6bb7-4ba6-928d-03b5aaa3ee6c.PNG)
