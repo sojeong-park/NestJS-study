@@ -111,3 +111,11 @@ route.delete('/animal/:id', (req, res) => {
     ![모듈분리전](https://user-images.githubusercontent.com/24540759/149896292-f60fbf3d-5ba9-479e-b459-3ba41d46555e.PNG)
   - 분리 후
     ![모듈분리후](https://user-images.githubusercontent.com/24540759/149896308-8d416815-6bb7-4ba6-928d-03b5aaa3ee6c.PNG)
+
+#### 4. NestJS
+
+1. Controller 패턴
+
+- 컨트롤러는 들어오는 요청을 받아 적절한 service로 넘겨 응답 데이터를 받아 클라이언에게 반환함
+
+![image](https://user-images.githubusercontent.com/24540759/151119926-8585d408-d752-4838-952b-914a21b323a8.png)
