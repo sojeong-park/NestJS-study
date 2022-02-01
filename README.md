@@ -112,10 +112,53 @@ route.delete('/animal/:id', (req, res) => {
   - 분리 후
     ![모듈분리후](https://user-images.githubusercontent.com/24540759/149896308-8d416815-6bb7-4ba6-928d-03b5aaa3ee6c.PNG)
 
-#### 4. NestJS
+### 4. NestJS
 
-1. Controller 패턴
+#### 1. Controller 패턴
 
 - 컨트롤러는 들어오는 요청을 받아 적절한 service로 넘겨 응답 데이터를 받아 클라이언에게 반환함
 
 ![image](https://user-images.githubusercontent.com/24540759/151119926-8585d408-d752-4838-952b-914a21b323a8.png)
+
+#### 2. 의존성 주입(dependency injection, DI)
+- providers 키워드 활용
+- module.ts파일에 controller에서 사용할 service 파일들을 providers에 입력하여 controller에서 직접적으로 service를 주입받는것이 아닌 module.ts에서 의존하여 주입받는것
+- controllers: 사용자
+- providers: 제공자
+```javascript
+@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+```
+
+#### 3. 캡슐화
+- exports 키워드 활용
+- UserService 파일을 AppCotroller에서 사용할 경우 선언방법 2가지
+
+1) providers에 userService 추가하기
+```javascript
+//app.module.ts
+@Module({
+  controllers: [AppController],
+  providers: [AppService, UserService]
+})
+```
+
+2) UserModule에서 exports 사용, AppModule에서 imports 사용
+```javascript
+//users.module.ts
+@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService]
+})
+
+//app.module.ts
+@Module({
+  imports: [UsersModule],
+  controllers: [AppController],
+  providers: [AppService]
+})
+```
+
